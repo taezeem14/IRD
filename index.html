@@ -6,6 +6,10 @@
   <title>Imad Rayees — Software Engineer & Product Designer</title>
   <meta name="description" content="Portfolio of Imad Rayees (Mohammad Imad Ud Din) — Full-Stack Developer, UI/UX Enthusiast, and Open Source Builder based in Kashmir, India.">
   
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="alternate icon" href="favicon.svg">
+  
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -51,30 +55,47 @@
   </script>
 
   <style>
-    /* Custom utility animations and subtle glass accents */
+    /* Ultra-smooth GPU-accelerated rendering */
+    * {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
     ::selection {
       background-color: #6366f1;
       color: #ffffff;
     }
+    
+    /* Hardware accelerated lightweight glass navbar */
     .glass-nav {
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      transform: translateZ(0);
+      will-change: transform;
     }
-    .glass-card {
-      backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
+
+    /* High performance native CSS background glows (0ms repaint on scroll) */
+    .perf-bg {
+      background-image: 
+        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 45%),
+        radial-gradient(circle at 90% 35%, rgba(6, 182, 212, 0.06) 0%, transparent 35%),
+        radial-gradient(circle at 10% 75%, rgba(139, 92, 246, 0.05) 0%, transparent 35%);
+      background-repeat: no-repeat;
     }
-    .glow-bg {
-      background: radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 65%);
+
+    /* Optimized transitions */
+    .glow-card {
+      transition: border-color 0.2s ease, transform 0.2s ease;
+      will-change: transform;
     }
     .glow-card:hover {
-      box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.2);
+      transform: translateY(-2px);
     }
-    /* Scroll reveal transitions */
+
+    /* Lightweight reveal */
     .reveal {
       opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+      transform: translateY(16px);
+      transition: opacity 0.45s ease-out, transform 0.45s ease-out;
     }
     .reveal.active {
       opacity: 1;
@@ -83,14 +104,7 @@
   </style>
 </head>
 
-<body class="bg-zinc-50 text-zinc-900 dark:bg-[#09090b] dark:text-zinc-100 font-sans antialiased min-h-screen transition-colors duration-300 relative overflow-x-hidden selection:bg-brand-500 selection:text-white">
-
-  <!-- Background decorative light glows -->
-  <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
-    <div class="absolute -top-40 left-1/2 -translate-x-1/2 w-[700px] h-[500px] bg-brand-500/10 dark:bg-brand-500/15 rounded-full blur-3xl opacity-70"></div>
-    <div class="absolute top-[40%] -right-40 w-[500px] h-[500px] bg-cyan-500/5 dark:bg-cyan-500/10 rounded-full blur-3xl opacity-50"></div>
-    <div class="absolute top-[75%] -left-40 w-[500px] h-[500px] bg-violet-500/5 dark:bg-violet-500/10 rounded-full blur-3xl opacity-50"></div>
-  </div>
+<body class="bg-zinc-50 text-zinc-900 dark:bg-[#09090b] dark:text-zinc-100 font-sans antialiased min-h-screen transition-colors duration-200 relative overflow-x-hidden perf-bg selection:bg-brand-500 selection:text-white">
 
   <!-- Toast Notification Container -->
   <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 px-4 py-3 rounded-xl shadow-2xl border border-zinc-800 dark:border-zinc-200 text-sm font-medium">
@@ -100,11 +114,11 @@
 
   <!-- FLOATING NAVIGATION BAR -->
   <header class="fixed top-4 inset-x-0 z-40 px-4 sm:px-6 max-w-5xl mx-auto">
-    <nav class="glass-nav bg-white/80 dark:bg-zinc-900/80 border border-zinc-200/80 dark:border-zinc-800/80 rounded-full px-4 sm:px-6 py-2.5 shadow-sm dark:shadow-2xl flex items-center justify-between transition-all duration-200">
+    <nav class="glass-nav bg-white/85 dark:bg-zinc-900/85 border border-zinc-200/80 dark:border-zinc-800/80 rounded-full px-4 sm:px-6 py-2.5 shadow-sm dark:shadow-2xl flex items-center justify-between">
       
-      <!-- Brand Logo -->
+      <!-- Brand Logo with Favicon Icon -->
       <a href="#home" class="flex items-center gap-2.5 group">
-        <span class="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 flex items-center justify-center font-bold text-xs font-mono group-hover:scale-105 transition-transform duration-200">
+        <span class="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 flex items-center justify-center font-bold text-xs font-mono group-hover:scale-105 transition-transform">
           IR
         </span>
         <span class="font-bold text-sm tracking-tight hidden sm:inline-block">
@@ -278,7 +292,7 @@
           <div class="relative rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-900 shadow-lg group aspect-[4/5] flex flex-col justify-end p-6">
             
             <!-- Background Image with Clean Fallback -->
-            <img src="avatar.jpg" alt="Imad Rayees Profile Background" class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-500" onerror="this.src='https://github.com/imadrayeesdar.png'">
+            <img src="avatar.jpg" alt="Imad Rayees Profile Background" class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://github.com/imadrayeesdar.png'">
             <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent"></div>
 
             <!-- Profile Info Overlay -->
@@ -392,7 +406,7 @@
       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
         
         <!-- Frontend Column -->
-        <div class="p-6 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between space-y-6 glow-card transition-all">
+        <div class="p-6 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between space-y-6 glow-card">
           <div class="space-y-4">
             <div class="flex items-center justify-between pb-3 border-b border-zinc-100 dark:border-zinc-800">
               <div class="flex items-center gap-2.5 font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -432,7 +446,7 @@
         </div>
 
         <!-- Backend Column -->
-        <div class="p-6 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between space-y-6 glow-card transition-all">
+        <div class="p-6 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between space-y-6 glow-card">
           <div class="space-y-4">
             <div class="flex items-center justify-between pb-3 border-b border-zinc-100 dark:border-zinc-800">
               <div class="flex items-center gap-2.5 font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -472,7 +486,7 @@
         </div>
 
         <!-- Infrastructure & DevOps Column -->
-        <div class="p-6 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between space-y-6 glow-card transition-all">
+        <div class="p-6 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between space-y-6 glow-card">
           <div class="space-y-4">
             <div class="flex items-center justify-between pb-3 border-b border-zinc-100 dark:border-zinc-800">
               <div class="flex items-center gap-2.5 font-bold text-base text-zinc-900 dark:text-zinc-100">
@@ -536,7 +550,7 @@
           <!-- Timeline Pin -->
           <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-4 h-4 rounded-full bg-brand-500 border-4 border-white dark:border-zinc-950 shadow-sm"></div>
 
-          <div class="p-6 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 space-y-3 glow-card transition-all">
+          <div class="p-6 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 space-y-3 glow-card">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <h3 class="text-base sm:text-lg font-bold text-zinc-900 dark:text-white">Full-Stack Developer</h3>
@@ -576,7 +590,7 @@
           <!-- Timeline Pin -->
           <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-4 h-4 rounded-full bg-zinc-400 dark:bg-zinc-700 border-4 border-white dark:border-zinc-950"></div>
 
-          <div class="p-6 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 space-y-3 glow-card transition-all">
+          <div class="p-6 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 space-y-3 glow-card">
             <div class="flex flex-wrap items-center justify-between gap-2">
               <div>
                 <h3 class="text-base sm:text-lg font-bold text-zinc-900 dark:text-white">UI / UX & Open Source Builder</h3>
@@ -633,7 +647,7 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
         <!-- PROJECT 1: SOS Pendant (Featured Hero Project - Span 2 on Desktop) -->
-        <div class="md:col-span-2 rounded-2xl overflow-hidden bg-white dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 grid grid-cols-1 lg:grid-cols-12 glow-card transition-all">
+        <div class="md:col-span-2 rounded-2xl overflow-hidden bg-white dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 grid grid-cols-1 lg:grid-cols-12 glow-card">
           
           <!-- Visual Mockup Container (16:9 Aspect Ratio on Mobile, Full Height on Desktop) -->
           <div class="lg:col-span-5 bg-gradient-to-br from-indigo-950 via-zinc-900 to-black p-6 sm:p-8 flex flex-col justify-between relative overflow-hidden border-b lg:border-b-0 lg:border-r border-zinc-200 dark:border-zinc-800">
@@ -702,7 +716,7 @@
         </div>
 
         <!-- PROJECT 2: HexChain Wallet (Strict Aspect Ratio Card) -->
-        <div class="rounded-2xl overflow-hidden bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between glow-card transition-all">
+        <div class="rounded-2xl overflow-hidden bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between glow-card">
           <div>
             <!-- Visual Header (Aspect Ratio 16:9) -->
             <div class="aspect-video bg-gradient-to-br from-cyan-950 via-zinc-900 to-zinc-950 p-6 flex flex-col justify-between relative overflow-hidden border-b border-zinc-200 dark:border-zinc-800">
@@ -749,7 +763,7 @@
         </div>
 
         <!-- PROJECT 3: Synaptic CRM (Strict Aspect Ratio Card) -->
-        <div class="rounded-2xl overflow-hidden bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between glow-card transition-all">
+        <div class="rounded-2xl overflow-hidden bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between glow-card">
           <div>
             <!-- Visual Header (Aspect Ratio 16:9) -->
             <div class="aspect-video bg-gradient-to-br from-purple-950 via-zinc-900 to-zinc-950 p-6 flex flex-col justify-between relative overflow-hidden border-b border-zinc-200 dark:border-zinc-800">
@@ -1151,7 +1165,7 @@
     async function loadGH() {
       const ghCard = document.getElementById('gh-card');
 
-      function renderFallback(msg) {
+      function renderFallback() {
         ghCard.innerHTML = `
           <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 pb-6 border-b border-zinc-200 dark:border-zinc-800">
             <div class="flex items-center gap-3">
@@ -1169,7 +1183,7 @@
             </a>
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-            <a href="https://github.com/${GITHUB_USERNAME}/PORTFOILIO" target="_blank" class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-850 border border-zinc-200 dark:border-zinc-800 hover:border-brand-500/50 transition-colors block space-y-2">
+            <a href="https://github.com/${GITHUB_USERNAME}/PORTFOILIO" target="_blank" class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800 hover:border-brand-500/50 transition-colors block space-y-2">
               <div class="font-semibold text-xs text-brand-600 dark:text-brand-400 font-mono">PORTFOILIO</div>
               <p class="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">Personal developer portfolio & interactive showcase.</p>
               <div class="flex items-center gap-3 text-[11px] text-zinc-400 font-mono">
@@ -1177,7 +1191,7 @@
                 <span><i class="fa-solid fa-star text-[10px]"></i> 1</span>
               </div>
             </a>
-            <a href="https://github.com/${GITHUB_USERNAME}" target="_blank" class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-850 border border-zinc-200 dark:border-zinc-800 hover:border-brand-500/50 transition-colors block space-y-2">
+            <a href="https://github.com/${GITHUB_USERNAME}" target="_blank" class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800 hover:border-brand-500/50 transition-colors block space-y-2">
               <div class="font-semibold text-xs text-brand-600 dark:text-brand-400 font-mono">SOS-Pendant-Firmware</div>
               <p class="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">IoT emergency pendant telemetry dispatch codebase.</p>
               <div class="flex items-center gap-3 text-[11px] text-zinc-400 font-mono">
@@ -1185,7 +1199,7 @@
                 <span><i class="fa-solid fa-star text-[10px]"></i> 2</span>
               </div>
             </a>
-            <a href="https://github.com/${GITHUB_USERNAME}" target="_blank" class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-850 border border-zinc-200 dark:border-zinc-800 hover:border-brand-500/50 transition-colors block space-y-2">
+            <a href="https://github.com/${GITHUB_USERNAME}" target="_blank" class="p-4 rounded-xl bg-zinc-50 dark:bg-zinc-800/40 border border-zinc-200 dark:border-zinc-800 hover:border-brand-500/50 transition-colors block space-y-2">
               <div class="font-semibold text-xs text-brand-600 dark:text-brand-400 font-mono">UI-Component-Lab</div>
               <p class="text-xs text-zinc-500 dark:text-zinc-400 line-clamp-2">Experimental UI primitives and micro-interactions.</p>
               <div class="flex items-center gap-3 text-[11px] text-zinc-400 font-mono">
@@ -1357,14 +1371,15 @@
       }
     });
 
-    // ── SCROLL REVEAL OBSERVER ────────────────────
+    // ── HIGH-PERFORMANCE SCROLL REVEAL OBSERVER ────
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('active');
+          observer.unobserve(entry.target); // Unobserve to eliminate scroll overhead!
         }
       });
-    }, { threshold: 0.08 });
+    }, { threshold: 0.05 });
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
   </script>
