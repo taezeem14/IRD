@@ -55,7 +55,6 @@
   </script>
 
   <style>
-    /* Ultra-smooth GPU-accelerated rendering */
     * {
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
@@ -65,46 +64,85 @@
       color: #ffffff;
     }
     
-    /* Hardware accelerated lightweight glass navbar */
+    /* Hardware accelerated glass navbar */
     .glass-nav {
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
       transform: translateZ(0);
-      will-change: transform;
     }
 
-    /* High performance native CSS background glows (0ms repaint on scroll) */
-    .perf-bg {
-      background-image: 
-        radial-gradient(circle at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 45%),
-        radial-gradient(circle at 90% 35%, rgba(6, 182, 212, 0.06) 0%, transparent 35%),
-        radial-gradient(circle at 10% 75%, rgba(139, 92, 246, 0.05) 0%, transparent 35%);
-      background-repeat: no-repeat;
+    /* Ambient Glow Orbs */
+    .glow-orb {
+      position: absolute;
+      border-radius: 9999px;
+      pointer-events: none;
+      filter: blur(80px);
+      -webkit-filter: blur(80px);
+      transform: translateZ(0);
+      will-change: transform, opacity;
+      transition: opacity 0.5s ease;
     }
 
-    /* Optimized transitions */
+    /* Standard Card Hover */
     .glow-card {
-      transition: border-color 0.2s ease, transform 0.2s ease;
-      will-change: transform;
+      transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
     }
     .glow-card:hover {
       transform: translateY(-2px);
     }
+    .dark .glow-card:hover {
+      box-shadow: 0 12px 30px -10px rgba(99, 102, 241, 0.15);
+    }
 
-    /* Lightweight reveal */
+    /* Scroll Reveal transitions */
     .reveal {
       opacity: 0;
-      transform: translateY(16px);
-      transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+      transform: translateY(18px);
+      transition: opacity 0.5s cubic-bezier(0.16, 1, 0.3, 1), transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .reveal.active {
       opacity: 1;
       transform: translateY(0);
     }
+
+    /* ══════════════════════════════════════════════
+       LOW-END / ECO PERFORMANCE MODE OVERRIDES
+    ═════════════════════════════════════════════════ */
+    html.eco-mode .glow-orb {
+      display: none !important;
+    }
+    html.eco-mode .glass-nav {
+      backdrop-filter: none !important;
+      -webkit-backdrop-filter: none !important;
+      background-color: rgba(255, 255, 255, 0.98) !important;
+    }
+    html.dark.eco-mode .glass-nav {
+      background-color: rgba(18, 18, 22, 0.98) !important;
+    }
+    html.eco-mode .glow-card {
+      transition: border-color 0.15s ease !important;
+      transform: none !important;
+      box-shadow: none !important;
+    }
+    html.eco-mode .reveal {
+      opacity: 1 !important;
+      transform: none !important;
+      transition: none !important;
+    }
   </style>
 </head>
 
-<body class="bg-zinc-50 text-zinc-900 dark:bg-[#09090b] dark:text-zinc-100 font-sans antialiased min-h-screen transition-colors duration-200 relative overflow-x-hidden perf-bg selection:bg-brand-500 selection:text-white">
+<body class="bg-zinc-50 text-zinc-900 dark:bg-[#09090b] dark:text-zinc-100 font-sans antialiased min-h-screen transition-colors duration-200 relative overflow-x-hidden selection:bg-brand-500 selection:text-white">
+
+  <!-- ════ AMBIENT BACKGROUND GLOW ORBS ════ -->
+  <div id="ambient-glows" class="fixed inset-0 pointer-events-none z-0 overflow-hidden">
+    <!-- Top Hero Glow -->
+    <div class="glow-orb -top-32 left-1/2 -translate-x-1/2 w-[650px] h-[450px] bg-brand-500/20 dark:bg-brand-500/25 opacity-75"></div>
+    <!-- Mid Section Cyan Glow -->
+    <div class="glow-orb top-[38%] -right-28 w-[450px] h-[450px] bg-cyan-500/10 dark:bg-cyan-500/15 opacity-60"></div>
+    <!-- Bottom Projects Glow -->
+    <div class="glow-orb top-[70%] -left-28 w-[500px] h-[500px] bg-violet-500/10 dark:bg-violet-500/15 opacity-60"></div>
+  </div>
 
   <!-- Toast Notification Container -->
   <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-3 bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900 px-4 py-3 rounded-xl shadow-2xl border border-zinc-800 dark:border-zinc-200 text-sm font-medium">
@@ -116,7 +154,7 @@
   <header class="fixed top-4 inset-x-0 z-40 px-4 sm:px-6 max-w-5xl mx-auto">
     <nav class="glass-nav bg-white/85 dark:bg-zinc-900/85 border border-zinc-200/80 dark:border-zinc-800/80 rounded-full px-4 sm:px-6 py-2.5 shadow-sm dark:shadow-2xl flex items-center justify-between">
       
-      <!-- Brand Logo with Favicon Icon -->
+      <!-- Brand Logo -->
       <a href="#home" class="flex items-center gap-2.5 group">
         <span class="w-8 h-8 rounded-lg bg-zinc-900 dark:bg-zinc-100 text-white dark:text-zinc-900 flex items-center justify-center font-bold text-xs font-mono group-hover:scale-105 transition-transform">
           IR
@@ -138,8 +176,14 @@
 
       <!-- Right Controls -->
       <div class="flex items-center gap-2">
+        
+        <!-- Performance / FX Mode Button -->
+        <button id="fx-toggle" type="button" aria-label="Toggle Performance Mode" class="w-8 h-8 rounded-full flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700" title="Performance Mode (Full FX / Eco Mode)">
+          <i id="fx-icon" class="fa-solid fa-wand-magic-sparkles text-xs text-brand-500 dark:text-brand-400"></i>
+        </button>
+
         <!-- Theme Switcher Button -->
-        <button id="theme-toggle" type="button" aria-label="Toggle Color Theme" class="w-8 h-8 rounded-full flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700">
+        <button id="theme-toggle" type="button" aria-label="Toggle Color Theme" class="w-8 h-8 rounded-full flex items-center justify-center text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors border border-transparent hover:border-zinc-200 dark:hover:border-zinc-700" title="Toggle Theme">
           <i id="theme-icon" class="fa-solid fa-moon text-xs"></i>
         </button>
 
@@ -231,7 +275,7 @@
           </a>
         </div>
 
-        <!-- Metrics / Quick Highlights Grid (Consistent Aspect Ratio & Grid Proportions) -->
+        <!-- Metrics / Quick Highlights Grid -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4 pt-8 border-t border-zinc-200 dark:border-zinc-800/80">
           <div class="p-3.5 rounded-xl bg-white/60 dark:bg-zinc-900/50 border border-zinc-200/80 dark:border-zinc-800/80">
             <div class="text-2xl font-bold font-mono text-zinc-900 dark:text-white">3+</div>
@@ -270,11 +314,10 @@
     </section>
 
     <!-- ═══════════════════════════════════════════════
-         2. ABOUT SECTION (Proportional 2-Column Bento)
+         2. ABOUT SECTION
     ════════════════════════════════════════════════ -->
     <section id="about" class="reveal space-y-8">
       
-      <!-- Section Header -->
       <div class="space-y-1">
         <div class="flex items-center gap-2 font-mono text-xs font-semibold text-brand-600 dark:text-brand-400 uppercase tracking-widest">
           <i class="fa-solid fa-user-astronaut"></i>
@@ -287,11 +330,10 @@
 
       <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
         
-        <!-- Left Column: Portrait & Meta Card (Strict 4:5 Aspect Ratio Profile Card) -->
+        <!-- Left Column: Portrait & Meta Card -->
         <div class="md:col-span-5 space-y-4">
           <div class="relative rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 bg-zinc-900 shadow-lg group aspect-[4/5] flex flex-col justify-end p-6">
             
-            <!-- Background Image with Clean Fallback -->
             <img src="avatar.jpg" alt="Imad Rayees Profile Background" class="absolute inset-0 w-full h-full object-cover opacity-80 group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://github.com/imadrayeesdar.png'">
             <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/60 to-transparent"></div>
 
@@ -309,7 +351,6 @@
             </div>
           </div>
 
-          <!-- Quick Actions under Avatar -->
           <div class="p-4 rounded-xl bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 flex items-center justify-between text-xs">
             <span class="text-zinc-500 dark:text-zinc-400">Custom Domain:</span>
             <a href="https://imadrayees.is-a.dev" target="_blank" class="font-mono font-medium text-brand-600 dark:text-brand-400 hover:underline flex items-center gap-1">
@@ -547,7 +588,6 @@
         
         <!-- Experience Item 1 -->
         <div class="relative space-y-3">
-          <!-- Timeline Pin -->
           <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-4 h-4 rounded-full bg-brand-500 border-4 border-white dark:border-zinc-950 shadow-sm"></div>
 
           <div class="p-6 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 space-y-3 glow-card">
@@ -587,7 +627,6 @@
 
         <!-- Experience Item 2 -->
         <div class="relative space-y-3">
-          <!-- Timeline Pin -->
           <div class="absolute -left-[31px] sm:-left-[39px] top-1.5 w-4 h-4 rounded-full bg-zinc-400 dark:bg-zinc-700 border-4 border-white dark:border-zinc-950"></div>
 
           <div class="p-6 rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 space-y-3 glow-card">
@@ -624,7 +663,7 @@
     </section>
 
     <!-- ═══════════════════════════════════════════════
-         5. FEATURED PROJECTS SECTION (Strict 16:9 Aspect Ratios)
+         5. FEATURED PROJECTS SECTION
     ════════════════════════════════════════════════ -->
     <section id="projects" class="reveal space-y-8">
       
@@ -646,7 +685,7 @@
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         
-        <!-- PROJECT 1: SOS Pendant (Featured Hero Project - Span 2 on Desktop) -->
+        <!-- PROJECT 1: SOS Pendant -->
         <div class="md:col-span-2 rounded-2xl overflow-hidden bg-white dark:bg-zinc-900/70 border border-zinc-200 dark:border-zinc-800 grid grid-cols-1 lg:grid-cols-12 glow-card">
           
           <!-- Visual Mockup Container (16:9 Aspect Ratio on Mobile, Full Height on Desktop) -->
@@ -715,7 +754,7 @@
 
         </div>
 
-        <!-- PROJECT 2: HexChain Wallet (Strict Aspect Ratio Card) -->
+        <!-- PROJECT 2: HexChain Wallet -->
         <div class="rounded-2xl overflow-hidden bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between glow-card">
           <div>
             <!-- Visual Header (Aspect Ratio 16:9) -->
@@ -762,7 +801,7 @@
           </div>
         </div>
 
-        <!-- PROJECT 3: Synaptic CRM (Strict Aspect Ratio Card) -->
+        <!-- PROJECT 3: Synaptic CRM -->
         <div class="rounded-2xl overflow-hidden bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 flex flex-col justify-between glow-card">
           <div>
             <!-- Visual Header (Aspect Ratio 16:9) -->
@@ -827,10 +866,8 @@
         </h2>
       </div>
 
-      <!-- Container dynamically populated by loadGH() -->
       <div id="gh-card" class="rounded-2xl bg-white dark:bg-zinc-900/60 border border-zinc-200 dark:border-zinc-800 p-6 sm:p-8 space-y-6 shadow-sm">
         
-        <!-- Loading Placeholder state -->
         <div class="flex items-center justify-center py-12 text-zinc-400 gap-3 font-mono text-sm">
           <i class="fa-solid fa-spinner fa-spin text-brand-500 text-lg"></i>
           <span>Connecting to GitHub API (@imadrayeesdar)…</span>
@@ -1019,6 +1056,75 @@
     // Set current year
     document.getElementById('current-year').textContent = new Date().getFullYear();
 
+    // ── ADAPTIVE PERFORMANCE / ECO MODE SYSTEM ─────
+    const fxToggleBtn = document.getElementById('fx-toggle');
+    const fxIcon = document.getElementById('fx-icon');
+
+    function setEcoMode(enableEco, notify = false) {
+      if (enableEco) {
+        document.documentElement.classList.add('eco-mode');
+        fxIcon.className = 'fa-solid fa-leaf text-xs text-emerald-400';
+        fxToggleBtn.setAttribute('title', 'Eco Mode Active (Animations Reduced) — Click for Full FX');
+        localStorage.setItem('ird-fx-mode', 'eco');
+        if (notify) showToast('⚡ Eco Mode Active: Heavy blurs & animations paused for maximum FPS');
+      } else {
+        document.documentElement.classList.remove('eco-mode');
+        fxIcon.className = 'fa-solid fa-wand-magic-sparkles text-xs text-brand-500 dark:text-brand-400';
+        fxToggleBtn.setAttribute('title', 'Full FX Mode Active — Click for Eco Mode');
+        localStorage.setItem('ird-fx-mode', 'full');
+        if (notify) showToast('✨ Full FX Mode Active: Ambient glows & visual depth restored');
+      }
+    }
+
+    // Auto-detect Low-End Hardware or battery constraints
+    function autoDetectHardwareCapability() {
+      const savedFx = localStorage.getItem('ird-fx-mode');
+      if (savedFx === 'eco') return setEcoMode(true);
+      if (savedFx === 'full') return setEcoMode(false);
+
+      // Check prefers-reduced-motion
+      if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return setEcoMode(true);
+      }
+
+      // Check CPU concurrency & Device RAM
+      const isLowCpu = navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 2;
+      const isLowRam = navigator.deviceMemory && navigator.deviceMemory <= 2;
+      const isSaveData = navigator.connection && navigator.connection.saveData;
+
+      if (isLowCpu || isLowRam || isSaveData) {
+        setEcoMode(true);
+      } else {
+        setEcoMode(false);
+      }
+    }
+    autoDetectHardwareCapability();
+
+    fxToggleBtn.addEventListener('click', () => {
+      const isEco = document.documentElement.classList.contains('eco-mode');
+      setEcoMode(!isEco, true);
+    });
+
+    // Dynamic FPS Drop Watcher (Auto fallback if scroll drops frames on low-end device)
+    let lastFrameTime = performance.now();
+    let lowFpsCount = 0;
+    function checkFrameRate() {
+      const now = performance.now();
+      const delta = now - lastFrameTime;
+      lastFrameTime = now;
+
+      // If frame takes > 45ms (< 22 FPS) multiple times during initial load/scroll
+      if (delta > 45 && !document.documentElement.classList.contains('eco-mode') && !localStorage.getItem('ird-fx-mode')) {
+        lowFpsCount++;
+        if (lowFpsCount >= 5) {
+          setEcoMode(true, true);
+          return;
+        }
+      }
+      if (lowFpsCount < 5) requestAnimationFrame(checkFrameRate);
+    }
+    requestAnimationFrame(checkFrameRate);
+
     // ── THEME MANAGEMENT ──────────────────────────
     const themeToggleBtn = document.getElementById('theme-toggle');
     const themeIcon = document.getElementById('theme-icon');
@@ -1035,7 +1141,6 @@
       }
     }
 
-    // Initialize Theme: Default to dark mode if not set
     const savedTheme = localStorage.getItem('ird-theme');
     if (savedTheme === 'light') {
       applyTheme(false);
@@ -1088,7 +1193,7 @@
       let typeSpeed = isDeleting ? 40 : 85;
 
       if (!isDeleting && charIndex === currentWord.length) {
-        typeSpeed = 2000; // Pause at end of word
+        typeSpeed = 2000;
         isDeleting = true;
       } else if (isDeleting && charIndex === 0) {
         isDeleting = false;
@@ -1135,7 +1240,7 @@
       setTimeout(() => {
         toast.classList.remove('translate-y-0', 'opacity-100');
         toast.classList.add('translate-y-20', 'opacity-0');
-      }, 3200);
+      }, 3500);
     }
 
     function copyToClipboard(text, successMsg = 'Copied to clipboard!') {
@@ -1328,7 +1433,6 @@
         return;
       }
 
-      // Basic email regex
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         formStatus.className = 'text-xs font-medium text-center p-3 rounded-lg bg-rose-500/10 text-rose-500 border border-rose-500/20';
@@ -1371,12 +1475,12 @@
       }
     });
 
-    // ── HIGH-PERFORMANCE SCROLL REVEAL OBSERVER ────
+    // ── SCROLL REVEAL OBSERVER ────────────────────
     const observer = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('active');
-          observer.unobserve(entry.target); // Unobserve to eliminate scroll overhead!
+          observer.unobserve(entry.target);
         }
       });
     }, { threshold: 0.05 });
